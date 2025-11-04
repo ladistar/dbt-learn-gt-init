@@ -1,0 +1,21 @@
+models:
+  - name: int_orders__pivoted
+    description: "Intermediate model that pivots payment methods for orders."
+    columns:
+      - name: order_id
+        description: "Primary key for each order."
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
+      - name: bank_transfer_amount
+        description: "Total amount paid using bank transfer."
+      - name: credit_card_amount
+        description: "Total amount paid using credit card."
+      - name: coupon_amount
+        description: "Total amount paid using coupon."
+      - name: gift_card_amount
+        description: "Total amount paid using gift card."
