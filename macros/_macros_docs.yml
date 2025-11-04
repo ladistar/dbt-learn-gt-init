@@ -31,3 +31,45 @@ macros:
     examples:
       - description: "Grant SELECT permissions on all tables and views in the 'analytics' schema to the 'data_analyst' role in the 'production' database"
         code: "{{ grant_select(schema='analytics', role='data_analyst', database='production') }}"
+
+  - name: clean_stale_models
+    description: "Queries the information schema to find tables and views older than specified days and generates automated drop statements with optional execution"
+    arguments:
+      - name: database
+        type: string
+        description: "The database to query for stale models"
+        default: "target.database"
+      - name: schema
+        type: string
+        description: "The schema to search for stale models"
+        default: "target.schema"
+      - name: days
+        type: integer
+        description: "Number of days to consider a model stale (objects older than this will be targeted for cleanup)"
+        default: 7
+      - name: dry_run
+        type: boolean
+        description: "When True (default and safer), only logs the drop statements without executing them. When False, executes the drop statements. Use True to preview changes before making modifications."
+        default: True
+    examples:
+      - description: "Preview drop statements for models older than 7 days in the current schema"
+        code: "{{ clean_stale_models() }}"
+      - description: "Execute cleanup of models older than 14 days in the 'staging' schema"
+        code: "{{ clean_stale_models(schema='staging', days=14, dry_run=False) }}"
+
+
+  - name: union_tables_by_prefix
+    description: "Unions all tables with a specified prefix from a given database and schema"
+    arguments:
+      - name: database
+        type: string
+        description: "The database containing the tables to union"
+      - name: schema
+        type: string
+        description: "The schema containing the tables to union"
+      - name: prefix
+        type: string
+        description: "The prefix to match table names against"
+    examples:
+      - description: "Union all tables starting with 'staging_' in the 'raw' schema"
+        code: "{{ union_tables_by_prefix('my_database', 'raw', 'staging_') }}"
