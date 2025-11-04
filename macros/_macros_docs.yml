@@ -1,0 +1,33 @@
+version: 2
+
+macros:
+  - name: cents_to_dollars
+    description: "Converts a monetary value from cents to dollars by dividing by 100 and rounding to specified decimal places"
+    arguments:
+      - name: column_name
+        type: string
+        description: "The column or value in cents to convert to dollars"
+      - name: decimal
+        type: integer
+        description: "Number of decimal places to round the result to"
+        default: 2
+    example:
+      - description: "Convert the 'amount' column from cents to dollars, rounded to 2 decimal places"
+        code: "{{ cents_to_dollars('amount', 2) }}"
+
+  - name: grant_select
+    description: "Grants SELECT permissions on all tables and views in a schema to a specified role"
+    arguments:
+      - name: schema
+        type: string
+        description: "The schema to grant permissions on"
+        default: "target.schema"
+      - name: role
+        type: string
+        description: "The role to grant permissions to"
+        default: "target.role"
+      - name: database
+        type: string
+    examples:
+      - description: "Grant SELECT permissions on all tables and views in the 'analytics' schema to the 'data_analyst' role in the 'production' database"
+        code: "{{ grant_select(schema='analytics', role='data_analyst', database='production') }}"
