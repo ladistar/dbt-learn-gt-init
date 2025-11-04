@@ -1,0 +1,25 @@
+models:
+  - name: stg_stripe__payment
+    description: "Staging models for the Stripe source data."
+    columns:
+      - name: payment_id
+        description: "Primary key for each payment."
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        description: "Identifier linking to the order associated with the payment."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
+      - name: amount
+        description: "Original payment amount divided by 100 to convert from cents to dollars."
+      - name: status
+        description: '{{ doc("order_status") }}'
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['success', 'fail', 'pending']

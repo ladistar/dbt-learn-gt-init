@@ -1,10 +1,19 @@
 sources:
   - name: jaffle_shop
+    description: "Source data for the Jaffle Shop."
     database: raw
     schema: jaffle_shop
     tables:
       - name: customers
+        description: "Raw customer data."
+        columns:
+          - name: id
+            description: "Primary key for each customer."
+            data_tests:
+              - unique
+              - not_null
       - name: orders
+        description: "Raw order data."
         config:
           freshness:
             warn_after: {count: 24, period: hour}
