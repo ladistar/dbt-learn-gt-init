@@ -73,3 +73,18 @@ macros:
     examples:
       - description: "Union all tables starting with 'staging_' in the 'raw' schema"
         code: "{{ union_tables_by_prefix('my_database', 'raw', 'staging_') }}"
+
+  - name: generate_schema_name
+    description: "Generates a schema name by appending a custom schema suffix to the default target schema, or returns the default schema if no custom name is provided"
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: "The custom schema suffix to append to the default schema. If null or empty, only the default schema is used"
+      - name: node
+        type: object
+        description: "The dbt node object (typically not used in the logic but required by dbt's schema naming convention)"
+    examples:
+      - description: "Generate schema name with custom suffix 'staging'"
+        code: "{{ generate_schema_name('staging', this) }}"
+      - description: "Generate schema name with no custom suffix (returns default schema)"
+        code: "{{ generate_schema_name(none, this) }}"
