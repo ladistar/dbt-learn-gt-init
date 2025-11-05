@@ -1,3 +1,9 @@
+{{config(
+    materialized = 'incremental',
+    cluster_by = ['start_time']
+)
+}}
+
 WITH base AS (
 
 	SELECT *
@@ -12,3 +18,7 @@ SELECT
   end_time,
   credits_used
 FROM base
+
+{% if is_incremental() %}
+    WHERE start_time > (SELECT MAX(start_time) FROM {{ this }})
+{% endif %}
